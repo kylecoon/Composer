@@ -11,7 +11,6 @@ public class SceneChangeManager : MonoBehaviour
     public GameObject rightCurtain;
     public GameObject text1;
     public GameObject text2;
-    private int level = 0;
     void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
@@ -38,9 +37,9 @@ public class SceneChangeManager : MonoBehaviour
             GameObject.Find("Player").GetComponent<PerformControls>().cutSceneDeactivation = true;
         }
         GetComponent<AudioSource>().Play();
-        if (level != 0)
+        if (l >= 0)
         {
-            StartCoroutine(FadeInProgress());
+            StartCoroutine(FadeInProgress(l));
         }
         Vector3 left_initial = leftCurtain.GetComponent<RectTransform>().anchoredPosition;
         Vector3 right_initial = rightCurtain.GetComponent<RectTransform>().anchoredPosition;
@@ -52,13 +51,9 @@ public class SceneChangeManager : MonoBehaviour
         }
         SceneManager.LoadScene((l + 1).ToString(), LoadSceneMode.Single);
         yield return new WaitForSeconds(0.3f);
-        if (level != 0)
+        if (l >= 0)
         {
             StartCoroutine(FadeOutProgress());
-        }
-        else
-        {
-            ++level;
         }
         for (int i = 0; i < 50; ++i)
         {
@@ -67,9 +62,9 @@ public class SceneChangeManager : MonoBehaviour
             yield return new WaitForSeconds(0.015f);
         }
     }
-    private IEnumerator FadeInProgress()
+    private IEnumerator FadeInProgress(int l)
     {
-        text1.GetComponent<TextMeshProUGUI>().text = level.ToString() + "/20";
+        text1.GetComponent<TextMeshProUGUI>().text = (l + 1).ToString() + "/20";
         text1.SetActive(true);
         text2.SetActive(true);
         for (int i = 0; i < 25; ++i)
@@ -90,6 +85,5 @@ public class SceneChangeManager : MonoBehaviour
         }
         text1.SetActive(false);
         text2.SetActive(false);
-        level++;
     }
 }

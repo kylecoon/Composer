@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseMenuControl : MonoBehaviour
 {
@@ -17,8 +18,12 @@ public class PauseMenuControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            menuOpened = !menuOpened;
-            pauseMenu.transform.GetChild(0).gameObject.SetActive(menuOpened);
+            ToggleMenu();
         }
+    }
+    public void ToggleMenu()
+    {
+        menuOpened = !menuOpened;
+        pauseMenu.transform.GetChild(0).gameObject.SetActive(menuOpened);
     }
 }

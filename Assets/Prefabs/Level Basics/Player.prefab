@@ -172,7 +172,6 @@ MonoBehaviour:
   startingPosition: {x: -8.74, y: -2.462, z: -0.21990956}
   startMode: 1
   cutSceneDeactivation: 0
-  onGround: 1
   canJump: 1
   triedJump: 0
 --- !u!114 &3941994302740676450
@@ -205,3 +204,6 @@ MonoBehaviour:
   ground1: {fileID: 21300000, guid: 8f826a1c15dd9466db3d5f16549ed9df, type: 3}
   ground2: {fileID: 21300000, guid: f4d05000da6ff4bc3aecdbd144f582cf, type: 3}
   air: {fileID: 21300000, guid: 031bb49cb49054a7db04669624acf720, type: 3}
+  JumpMask:
+    serializedVersion: 2
+    m_Bits: 384

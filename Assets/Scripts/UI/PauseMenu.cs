@@ -18,4 +18,8 @@ public class PauseMenu : MonoBehaviour
     {
         EventBus.Publish(new LevelCompleteEvent(-1));
     }
+    public void ResumeGame()
+    {
+        GameObject.Find("Player").GetComponent<PauseMenuControl>().ToggleMenu();
+    }
 }

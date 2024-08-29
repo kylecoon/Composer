@@ -781,6 +781,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8285622043224170079, guid: 3a1b58ad1de694d8594cf64afe10402c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8814506266486761306, guid: 3a1b58ad1de694d8594cf64afe10402c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -55.1
@@ -1631,7 +1635,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '
 
-    Notes Collected'
+    Keys Collected'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b3f750e1f3d064e2388b20ead2ee8764, type: 2}
   m_sharedMaterial: {fileID: -9207746271877270051, guid: b3f750e1f3d064e2388b20ead2ee8764, type: 2}

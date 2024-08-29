@@ -11,10 +11,10 @@ public class PerformControls : MonoBehaviour
     public LayerMask JumpMask;
     public LayerMask MoveMask;
     [SerializeField] private Vector3 startingPosition;
-    private char currMode = 'c';
+    public static char currMode = 'c';
     public char startMode;
     public bool cutSceneDeactivation = false;
-    [SerializeField] private bool onGround = true;
+    [SerializeField] public static bool onGround = true;
     [SerializeField] private bool canJump = true;
     [SerializeField] private bool triedJump = false;
     // Start is called before the first frame update
@@ -111,32 +111,30 @@ public class PerformControls : MonoBehaviour
         float initialTime = Time.time;
         while (Time.time - initialTime < 0.19f)
         {
-            if (canJump)
+            if (onGround && canJump)
             {
-                DoJump();
-                triedJump = false;
-                yield break;
+                canJump = false;
+                StartCoroutine(DoJump());
+
             }
             yield return new WaitForEndOfFrame();
         }
         triedJump = false;
     }
-    private void DoJump()
+    private IEnumerator DoJump()
     {
-        if (rb.velocity.y <= 0)
-        {
-            canJump = false;
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(Vector2.up * 675);
-        }
+        Debug.Log("yippee!");
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.AddForce(Vector2.up * 675);
+        yield return new WaitForSeconds(0.2f);
+        canJump = true;
     }
 
     private void CheckGround()
     {
-        if ((Physics2D.Raycast(new Vector2(transform.position.x - 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask) || Physics2D.Raycast(new Vector2(transform.position.x + 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask)) && rb.velocity.y <= 0)
+        if (Physics2D.Raycast(new Vector2(transform.position.x - 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask) || Physics2D.Raycast(new Vector2(transform.position.x + 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask))
         {
             onGround = true;
-            canJump = true;
         }
         else
         {
@@ -144,13 +142,12 @@ public class PerformControls : MonoBehaviour
             {
                 StartCoroutine(CoyoteTime());
             }
-            onGround = false;
         }
     }
 
     private IEnumerator CoyoteTime()
     {
         yield return new WaitForSeconds(0.12f);
-        canJump = false;
+        onGround = false;
     }
 }
