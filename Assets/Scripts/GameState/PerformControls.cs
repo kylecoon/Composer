@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PerformControls : MonoBehaviour
@@ -13,6 +14,9 @@ public class PerformControls : MonoBehaviour
     private char currMode = 'c';
     public char startMode;
     public bool cutSceneDeactivation = false;
+    [SerializeField] private bool onGround = true;
+    [SerializeField] private bool canJump = true;
+    [SerializeField] private bool triedJump = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +32,7 @@ public class PerformControls : MonoBehaviour
         if (currMode == 'p')
         {
             GetInput();
+            CheckGround();
         }
     }
 
@@ -43,10 +48,9 @@ public class PerformControls : MonoBehaviour
             direction.x = 0;
         }
         rb.velocity = direction;
-        if (Input.GetKeyDown(KeyCode.Space) && (Physics2D.Raycast(new Vector2(transform.position.x - 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask) || Physics2D.Raycast(new Vector2(transform.position.x + 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask)))
+        if (Input.GetKeyDown(KeyCode.Space) && triedJump == false)
         {
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(Vector2.up * 675);
+            StartCoroutine(TriedJump());
         }
     }
 
@@ -100,5 +104,53 @@ public class PerformControls : MonoBehaviour
         currMode = '_';
         yield return new WaitForSeconds(f);
         currMode = previousMode;
+    }
+    private IEnumerator TriedJump()
+    {
+        triedJump = true;
+        float initialTime = Time.time;
+        while (Time.time - initialTime < 0.19f)
+        {
+            if (canJump)
+            {
+                DoJump();
+                triedJump = false;
+                yield break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        triedJump = false;
+    }
+    private void DoJump()
+    {
+        if (rb.velocity.y <= 0)
+        {
+            canJump = false;
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(Vector2.up * 675);
+        }
+    }
+
+    private void CheckGround()
+    {
+        if ((Physics2D.Raycast(new Vector2(transform.position.x - 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask) || Physics2D.Raycast(new Vector2(transform.position.x + 0.2f, transform.position.y), Vector2.down, 0.55f, JumpMask)) && rb.velocity.y <= 0)
+        {
+            onGround = true;
+            canJump = true;
+        }
+        else
+        {
+            if (onGround)
+            {
+                StartCoroutine(CoyoteTime());
+            }
+            onGround = false;
+        }
+    }
+
+    private IEnumerator CoyoteTime()
+    {
+        yield return new WaitForSeconds(0.12f);
+        canJump = false;
     }
 }

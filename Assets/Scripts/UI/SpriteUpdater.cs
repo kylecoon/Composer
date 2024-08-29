@@ -19,7 +19,11 @@ public class SpriteUpdater : MonoBehaviour
     {
         if (Physics2D.Raycast(transform.position, Vector2.down, 0.6f, mask))
         {
-            if (transform.position.x % 1.0f < 0.5f)
+            if (Input.GetAxis("Horizontal") == 0)
+            {
+                return;
+            }
+            if (Mathf.Abs(transform.position.x) % 1.0f < 0.5f)
             {
                 GetComponent<SpriteRenderer>().sprite = ground1;
             }

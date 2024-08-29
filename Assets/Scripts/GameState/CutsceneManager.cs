@@ -272,7 +272,7 @@ public class CutsceneManager : MonoBehaviour
     private IEnumerator Level11Cutscene()
     {
         yield return new WaitForEndOfFrame();
-        MaestroText.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "If you ever which to remove an articulation, simply right-click the note it is on!";
+        MaestroText.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "If you ever wish to remove an articulation, simply right-click the note it is on!";
         MaestroText.SetActive(true);
         DeactivatePlayerControls();
         transform.GetChild(0).GetComponent<MaestroAudio>().PlayTalk();
